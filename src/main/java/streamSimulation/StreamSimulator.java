@@ -62,27 +62,51 @@ public class StreamSimulator implements Runnable {
     public static void main(String[] args) throws Exception
     {
         int maxDelayMsecs=0;
-        int servingSpeed=100;
+        int servingSpeed=50;
         String startDate="2015-05-01 00:00:00";
-        StreamSimulator simulator1=new StreamSimulator("100",maxDelayMsecs,servingSpeed,startDate
-                ,"/media/xiaokeai/Study/data/0501ordered/100.txt");
-        simulator1.start();
-
-        StreamSimulator simulator2=new StreamSimulator("101",maxDelayMsecs,servingSpeed,startDate
-                ,"/media/xiaokeai/Study/data/0501ordered/101.txt");
-        simulator2.start();
-
-        StreamSimulator simulator3=new StreamSimulator("103",maxDelayMsecs,servingSpeed,startDate
-                ,"/media/xiaokeai/Study/data/0501ordered/103.txt");
-        simulator3.start();
-
-        StreamSimulator simulator4=new StreamSimulator("104",maxDelayMsecs,servingSpeed,startDate
-                ,"/media/xiaokeai/Study/data/0501ordered/104.txt");
-        simulator4.start();
-
-        StreamSimulator simulator5=new StreamSimulator("105",maxDelayMsecs,servingSpeed,startDate
-                ,"/media/xiaokeai/Study/data/0501ordered/105.txt");
-        simulator5.start();
+        String filepath="/media/xiaokeai/Study/data/0501ordered/";
+        File file =new File(filepath);
+        File[] filelist=file.listFiles();
+        for (int i=0;i<100;i++)
+        {
+            if(filelist[i].isFile())
+            {
+                String filename=filelist[i].getName();
+                StreamSimulator simulator=new StreamSimulator(filename,maxDelayMsecs,servingSpeed,startDate,filepath+filename);
+                simulator.start();
+            }
+        }
+//        StreamSimulator simulator1=new StreamSimulator("100",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/100.txt");
+//        simulator1.start();
+//
+//        StreamSimulator simulator2=new StreamSimulator("101",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/101.txt");
+//        simulator2.start();
+//
+//        StreamSimulator simulator3=new StreamSimulator("103",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/103.txt");
+//        simulator3.start();
+//
+//        StreamSimulator simulator4=new StreamSimulator("104",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/104.txt");
+//        simulator4.start();
+//
+//        StreamSimulator simulator5=new StreamSimulator("105",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/105.txt");
+//        simulator5.start();
+//        StreamSimulator simulator6=new StreamSimulator("106",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/106.txt");
+//        simulator6.start();
+//        StreamSimulator simulator8=new StreamSimulator("108",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/108.txt");
+//        simulator8.start();
+//        StreamSimulator simulator9=new StreamSimulator("109",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/109.txt");
+//        simulator9.start();
+//        StreamSimulator simulator10=new StreamSimulator("110",maxDelayMsecs,servingSpeed,startDate
+//                ,"/media/xiaokeai/Study/data/0501ordered/110.txt");
+//        simulator10.start();
 
     }
 
@@ -209,7 +233,7 @@ public class StreamSimulator implements Runnable {
     }
     private void sendToKafka(String id,String message)
     {
-        ProducerRecord<String,String> record=new ProducerRecord<>("taxi1",id,message);
+        ProducerRecord<String,String> record=new ProducerRecord<>("taxi",id,message);
         producer.send(record);
         System.out.println(id+"   "+message);
     }
